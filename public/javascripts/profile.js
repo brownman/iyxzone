@@ -290,7 +290,7 @@ Object.extend(Iyxzone.Profile.Presentor.GameDisplay, {
 	},
 
   mouseOutGamePic: function(gameID, event){
-    var to = event.relatedTarget || event.fromElement;
+    var to = event.relatedTarget || event.toElement;
     if($('game-display-panel')){
       if($(to) && $(to) != $('game-display-panel') && !$(to).descendantOf('game-display-panel')){
         this.saveCurrentContext();
@@ -305,7 +305,7 @@ Object.extend(Iyxzone.Profile.Presentor.GameDisplay, {
   },
 
   mouseOutGamePanel: function(gameID, event){
-    var to = event.relatedTarget || event.fromElement;
+    var to = event.relatedTarget || event.toElement;
     // prevent event bubble
     if($(to) && $(to) != $('game-display-panel') && !$(to).descendantOf('game-display-panel'))
       this.saveCurrentContext();

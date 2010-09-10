@@ -13,48 +13,11 @@
   <%= javascript_include_tag 'sound' %>
 <% end %>
 
-<% content_for :left do %>
-	<div class="avatarXl">
-		<div class="wrap">
-			<%= avatar_image @user, :size => 'max' %>
-		</div>
-	</div>
-	<%= render :partial => "user/profiles/operations", :locals => {:user => @user, :profile => @profile, :relationship => @relationship} %>
-  <%= render :partial => 'user/profiles/tag_panel', :locals => {:user => @user, :profile => @profile} %>
-	<%= render :partial => 'user/profiles/guilds', :locals => {:guilds => @guilds, :user => @user} %>
-  <% unless @viewings.blank? %>
-    <%= render :partial => 'user/profiles/recent_visitors', :locals => {:viewings => @viewings, :profile => @profile} %>
-  <% end %>
-  <% unless @common_friends.blank? %>
-    <%= render :partial => 'user/profiles/common_friends', :locals => {:friends => @common_friends, :user => @user} %>
-  <% end %>
-  <% unless @friends.blank? %>
-    <%= render :partial => 'user/profiles/friends', :locals => {:friends => @friends, :user => @user} %>
-  <% end %>
-  <% if @user.is_idol and !@fans.blank? %>
-    <%= render :partial => 'user/profiles/fans', :locals => {:fans => @fans, :user => @user} %>
-  <% end %>
-	
-<% end %>
-
 <%= render :partial => 'user/profiles/tab', :locals => {:user => @user, :profile => @profile} %>
 <div class='acMain'>
 	<div class="alphaColum acMainWrap" >
 		<div class="ac-r-m fix" id="profile-main-content">
 			<%= render :partial => "user/profiles/home_tab_info", :locals => {:user => @user, :profile=> @profile, :mini_blogs => @mini_blogs, :games => @games} %>
-		</div>
-		<div class="ac-r-b"><em></em></div>
-	</div>
-	<div class="alphaColum">
-		<div class="ac-r-t"><em></em></div>
-		<div class="ac-r-m fix">
-			<div class="alphaTitle fix"><div class="wrap">
-        <strong>留言板(共<%=@profile.comments_count%>条)</strong>
-        <%= link_to_function '', "$('profile-wall-wrap').toggle()", :class => "op i iArrUnFold"%>
-      </div></div>
-			<div class="ac-bd" id="profile-wall-wrap">
-				<%= render :partial => 'user/wall_messages/wall', :locals => {:wall => @profile, :recipient => @profile.user, :messages => @messages} %>
-			</div>
 		</div>
 		<div class="ac-r-b"><em></em></div>
 	</div>
