@@ -35,7 +35,7 @@ class Topic < ActiveRecord::Base
   end
 
   def latest_floor
-    post = posts.floor_order.first
+    post = posts.floor_order.last
     post.nil? ? 1 : (post.floor + 1)
   end
 

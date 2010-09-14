@@ -61,11 +61,6 @@ namespace :mini_blogs do
         terms1 = s1.terms
         terms2 = s2.nil? ? {} : s2.terms
         terms3 = s3.nil? ? {} : s3.terms
-terms = []
-      if !s1.blank?
-        terms1 = s1.terms
-        terms2 = s2.nil? ? {} : s2.terms
-        terms3 = s3.nil? ? {} : s3.terms
         terms1.each do |term, freq1|
           freq2 = terms2["#{term}"].nil? ? 0 : terms2["#{term}"]
           freq3 = terms3["#{term}"].nil? ? 0 : terms3["#{term}"]
