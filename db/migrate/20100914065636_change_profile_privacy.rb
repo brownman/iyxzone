@@ -1,5 +1,6 @@
 class ChangeProfilePrivacy < ActiveRecord::Migration
   def self.up
+=begin
     step = 2000
     count = User.count
     i = 0
@@ -11,6 +12,7 @@ class ChangeProfilePrivacy < ActiveRecord::Migration
       puts "update #{step}"
       i = i + 1
     end
+=end
   end
 
   def self.down
