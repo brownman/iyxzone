@@ -6,24 +6,29 @@ namespace :mini_blogs do
     ids = MiniBlog.random(:limit => 100).map(&:id)
     # 如果审核不通过了怎么办
     MiniBlogMetaData.first.update_attributes(:random_ids => ids)
+    puts "#{Time.now}: compute random mini blogs"
   end
 
   task :main_index => :environment do
+    s = Time.now
     MiniBlog.build_main_index
     `chown deployer:deployer #{MiniBlog.index_dir} -R`
+    puts "#{Time.now}: #{Time.now - s} sec to build main index for mini blog"
   end
 
   task :delta_index => :environment do
-    MiniBlog.build_delta_index 
+    s = Time.now
+    MiniBlog.build_delta_index
     `chown deployer:deployer #{MiniBlog.index_dir} -R`
+    puts "#{Time.now}: #{Time.now - s} sec to build delta index for mini blog"
   end
-  
+
   task :make_snapshot => :environment do
     s = Time.now
     MiniBlog.make_index_snapshot
-    e = Time.now
     `chown deployer:deployer #{File.join(MiniBlog.index_dir, "snapshots")} -R`
-    puts "#{e-s} sec to make new snapshot"
+    e = Time.now
+    puts "#{Time.now}: #{e-s} sec to make new snapshot"
   end
 
   # 保存2周内的，这样如果是每10分钟make snapshot，那就是保存6 * 24 * 14 个ss文件
@@ -31,13 +36,13 @@ namespace :mini_blogs do
     s = Time.now
     MiniBlog.clean_index_snapshots_before 2.week.ago
     e = Time.now
-    puts "#{e-s} sec to clean snapshots"
+    puts "#{Time.now}: #{e-s} sec to clean snapshots"
   end
 
   task :compute_rank => :environment do
     s = Time.now
     hot_topics = []
-    times = [2.minutes, 1.day, 2.days, 7.days]
+    times = [6.hours, 1.day, 2.days, 7.days]
 
     #
     # 对每个取3个snapshot，比如对6.hours.ago
@@ -52,6 +57,11 @@ namespace :mini_blogs do
       s2 = MiniBlog.get_index_snapshot_before t2
       s3 = MiniBlog.get_index_snapshot_before t3
       terms = []
+      if !s1.blank?
+        terms1 = s1.terms
+        terms2 = s2.nil? ? {} : s2.terms
+        terms3 = s3.nil? ? {} : s3.terms
+terms = []
       if !s1.blank?
         terms1 = s1.terms
         terms2 = s2.nil? ? {} : s2.terms
@@ -79,7 +89,8 @@ namespace :mini_blogs do
     meta_data = MiniBlogMetaData.first
     meta_data.update_attributes(:hot_topics => hot_topics)
     e = Time.now
-    puts "rank #{e-s} s"
+    puts "#{Time.now}: rank #{e-s} s"
   end
 
 end
+

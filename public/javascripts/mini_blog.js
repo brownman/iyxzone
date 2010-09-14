@@ -41,7 +41,7 @@ Iyxzone.MiniBlog = {
       var userID = parseInt(id.split('_')[1]);
       if(userID != myID){
         var link = new Element('a');
-        if(idolIDs.include(userID)){
+        if(!idolIDs.include(userID)){
           link.update("<span class='i iFollow'></span>成为粉丝");
           link.observe('click', function(e){
             Iyxzone.Idol.follow(userID, e.element());
