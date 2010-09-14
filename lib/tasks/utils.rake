@@ -1,12 +1,6 @@
 require 'pty'
 require 'expect'
 
-def exec_as user_name, &block
-  `su #{user_name}`
-  yield
-  `exit`
-end
-
 namespace :utils do
 
   desc "处理日志"
@@ -17,24 +11,20 @@ namespace :utils do
 
   desc "重启所有rails需要的程序"
   task :restart => :environment do
-    exec_as "root" do
-      # restart mysql
-      puts `service mysqld restart`
-      # restart httpd
-      puts `service httpd restart`
-      # restart postfix
-      puts `service postfix restart`
-      # restart impad
-      puts `service cyrus-imapd restart`
-      # synchronize time
-      puts `ntpdate 0.centos.pool.ntp.org`
-      # start memcached
-      puts `memcached -m 256 -u deployer`
-    end
-    exec_as "deployer" do
-      # juggernaut
-      puts `juggernaut -c juggernaut.yml -P tmp/pids/juggernaut.yml -l log/juggernaut.log -d`
-    end
+    # restart mysql
+    puts `service mysqld restart`
+    # restart httpd
+    puts `service httpd restart`
+    # restart postfix
+    puts `service postfix restart`
+    # restart impad
+    puts `service cyrus-imapd restart`
+    # synchronize time
+    puts `ntpdate 0.centos.pool.ntp.org`
+    # start memcached
+    puts `/usr/local/monit_bin/memcached restart`
+    # juggernaut
+    puts `/usr/local/monit_bin/juggernaut restart`
   end
 
   task :generate_captcha => :environment do

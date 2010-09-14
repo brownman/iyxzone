@@ -1,11 +1,12 @@
 <% content_for :html_title, "#{@user.login} - 个人主页 - 17Gaming.com" %>
-<% content_for :html_description, "#{@user.login}的个人主页 - 17Gaming.com (一起游戏网)愿做网络游戏玩家的精神家园。" %>
+<% content_for :html_description, "#{@user.login}的个人主页 - 17Gaming.com (一起游戏网)愿做网络游戏玩家
+的精神家园。" %>
 <% content_for :html_keywords, "#{@user.login}, 17Gaming, 一起游戏, 一起游戏网, 网络游戏玩家, 游戏社区, 社交网站, 网络游戏社区" %>
 
 <% if !@skin.default? %>
-	<% content_for :stylesheet_link do %>
-		<%= stylesheet_link_tag "themes/#{@skin.directory}/#{@skin.css}" %>
-	<% end %>
+  <% content_for :stylesheet_link do %>
+    <%= stylesheet_link_tag "themes/#{@skin.directory}/#{@skin.css}" %>
+  <% end %>
 <% end %>
 
 <% content_for :javascript_include do %>
@@ -13,14 +14,52 @@
   <%= javascript_include_tag 'sound' %>
 <% end %>
 
+<% content_for :left do %>
+  <div class="avatarXl">
+    <div class="wrap">
+      <%= avatar_image @user, :size => 'max' %>
+    </div>
+  </div>
+<%= render :partial => "user/profiles/operations", :locals => {:user => @user, :profile => @profile, :relationship => @relationship} %>
+  <%= render :partial => 'user/profiles/tag_panel', :locals => {:user => @user, :profile => @profile} %>
+  <%= render :partial => 'user/profiles/guilds', :locals => {:guilds => @guilds, :user => @user} %>
+  <% unless @viewings.blank? %>
+    <%= render :partial => 'user/profiles/recent_visitors', :locals => {:viewings => @viewings, :profile => @profile} %>
+  <% end %>
+  <% unless @common_friends.blank? %>
+    <%= render :partial => 'user/profiles/common_friends', :locals => {:friends => @common_friends, :user => @user} %>
+  <% end %>
+  <% unless @friends.blank? %>
+    <%= render :partial => 'user/profiles/friends', :locals => {:friends => @friends, :user => @user} %>
+  <% end %>
+  <% if @user.is_idol and !@fans.blank? %>
+    <%= render :partial => 'user/profiles/fans', :locals => {:fans => @fans, :user => @user} %>
+  <% end %>
+
+<% end %>
+
 <%= render :partial => 'user/profiles/tab', :locals => {:user => @user, :profile => @profile} %>
+
 <div class='acMain'>
-	<div class="alphaColum acMainWrap" >
-		<div class="ac-r-m fix" id="profile-main-content">
-			<%= render :partial => "user/profiles/home_tab_info", :locals => {:user => @user, :profile=> @profile, :mini_blogs => @mini_blogs, :games => @games} %>
-		</div>
-		<div class="ac-r-b"><em></em></div>
-	</div>
+  <div class="alphaColum acMainWrap" >
+    <div class="ac-r-m fix" id="profile-main-content">
+      <%= render :partial => "user/profiles/home_tab_info", :locals => {:user => @user, :profile=> @profile, :mini_blogs => @mini_blogs, :games => @games} %>
+    </div>
+    <div class="ac-r-b"><em></em></div>
+  </div>
+  <div class="alphaColum">
+    <div class="ac-r-t"><em></em></div>
+    <div class="ac-r-m fix">
+      <div class="alphaTitle fix"><div class="wrap">
+        <strong>留言板(共<%=@profile.comments_count%>条)</strong>
+        <%= link_to_function '', "$('profile-wall-wrap').toggle()", :class => "op i iArrUnFold"%>
+      </div></div>
+      <div class="ac-bd" id="profile-wall-wrap">
+        <%= render :partial => 'user/wall_messages/wall', :locals => {:wall => @profile, :recipient => @profile.user, :messages => @messages} %>
+      </div>
+    </div>
+    <div class="ac-r-b"><em></em></div>
+  </div>
 </div>
 
 <% unless @reply_to.nil? %>

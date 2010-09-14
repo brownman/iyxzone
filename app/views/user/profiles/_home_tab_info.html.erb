@@ -1,4 +1,6 @@
+<% if current_user != user %>
 <div class="addGame"><%= facebox_link "<span class=\"i iAdd02\"></span>添加游戏", new_character_url %></div>
+<% end %>
 	<div class="myGameList">
     <ul class="fix" id="game-list">
 			<%= render :partial => 'user/profiles/games_display', :locals => {:user => user, :profile=> profile, :games => games} %>

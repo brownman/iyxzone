@@ -50,7 +50,7 @@ Object.extend(Iyxzone.Comment, {
     if(login == null)
       $(commentableType + '_comment_content_' + commentableID).value = "";
     else
-      $(commentableType + '_comment_content_' + commentableID).value = "回复" + login + "：";
+      Iyxzone.insertAtCursor($(commentableType + '_comment_content_' + commentableID), "回复" + login + "：");
     $(commentableType + '_comment_content_' + commentableID).focus();  
   },
 
@@ -264,11 +264,12 @@ Object.extend(Iyxzone.WallMessage, {
 
   oldRecipientID: null,
 
-  set: function(wallType, wallID, login, id){
+  set: function(login, id){
     this.oldRecipientID = $('comment_recipient_id').value;
     $('comment_recipient_id').value = id;
     $('comment_content').focus();
-    $('comment_content').value = '回复' + login + '：';
+    Iyxzone.insertAtCursor($('comment_content'), '回复' + login + '：');
+    setTimeout(function(){window.scrollTo(0, $('comment_content').cumulativeOffset().top - 50);}, 200);
   },
   
   destroy: function(messageID, link){

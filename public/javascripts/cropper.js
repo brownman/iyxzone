@@ -230,7 +230,9 @@ Cropper.Img = Class.create({
 		if( this.img.complete || this.isWebKit ) {
 			this.onLoad(); // for some reason Safari seems to support img.complete but returns 'undefined' on the this.img object
 		} else {
-			Event.observe( this.img, 'load', this.onLoad.bindAsEventListener( this) );
+			Event.observe( this.img, 'load', function(){
+        this.onLoad();
+      }.bind(this));
 		}
 	},
 	
@@ -330,7 +332,10 @@ Cropper.Img = Class.create({
 
 		// attach the dragable to the select area
 		var x = new CropDraggable( this.selArea, { drawMethod: this.moveArea.bindAsEventListener( this ) } );
-		
+	
+    // added by gaoxh
+    Event.stopObserving( this.img, 'load');
+	
 		this.setParams();
 	},
 	
@@ -398,7 +403,7 @@ Cropper.Img = Class.create({
 		$( this.west ).setStyle( { width: 0, height: 0 } );
 		
 		// resize the container to fit the image
-		$( this.imgWrap ).setStyle( { 'width': this.imgW + 'px', 'height': this.imgH + 'px' } );
+		$( this.imgWrap ).setStyle( { 'width': this.imgW + 'px', 'height': this.imgH + 'px', 'margin': '0 auto' } );
 		
       
 		// hide the select area

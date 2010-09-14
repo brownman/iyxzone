@@ -19,9 +19,9 @@
 						<% end %>
 					</ul>
 					<% if user == current_user %>
-						<div class="ac-ft"><%= facebox_link "查看全部>>", friends_url() %></div>
+						<div class="ac-ft"><%= link_to "查看全部>>", friends_url() %></div>
 					<% else %>
-						<div class="ac-ft"><%= facebox_link "查看全部>>", other_friends_url(:uid => user.id) %></div>
+						<div class="ac-ft"><%= link_to "查看全部>>", other_friends_url(:uid => user.id) %></div>
 					<% end %>
 				</div>
 			</div>
