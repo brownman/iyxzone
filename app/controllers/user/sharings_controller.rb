@@ -1,13 +1,23 @@
 class User::SharingsController < UserBaseController
 
   def new
-    @link = MiniLink.new :url => params[:url]
+    if params[:url] =~ MiniLink::UrlReg
+      @link = MiniLink.find_by_proxy_url params[:url]
+    else
+      @link = MiniLink.find_by_url params[:url]
+    end
+
     @title = params[:title]
 
-    if @link.save
-      render :action => 'new'      
+    if @link.nil?
+      @link = MiniLink.new :url => params[:url]
+      if @link.save
+        render :action => 'new'
+      else
+        render :text => "发生错误"
+      end
     else
-      render :text => "发生错误"
+      render :action => 'new'
     end
   end
 
