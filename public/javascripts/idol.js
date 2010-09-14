@@ -200,7 +200,7 @@ Object.extend(Iyxzone.Idol.Pub, {
     html += '<div class="left"><span class="num">' + idolInfo.mini_blogs_count + '</span><br/>微博</div>';
     html += '</div>';
     html += '<div class="intro">' + idolInfo.motto + '</div>';
-    html += '<div><a target="_blank" href="' + Iyxzone.URL.listMiniBlog(idolInfo.id) + '">查看个人微博>></a></div>';
+    html += '<div><a target="_blank" href="' + Iyxzone.URL.otherMiniBlog(idolInfo.id) + '">查看个人微博>></a></div>';
     html += '</div>';
     html += '</div>';
     div.update(html);

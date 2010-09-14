@@ -477,7 +477,7 @@ Object.extend(Iyxzone.URL, {
 // mini blog url
 Object.extend(Iyxzone.URL, {
 
-  listMiniBlog: function(userID, params){
+  otherMiniBlog: function(userID, params){
     return this.build("/mini_blogs?uid=" + userID, params);
   },
 
